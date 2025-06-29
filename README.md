@@ -9,6 +9,7 @@ Este proyecto analiza datos simulados de empresas y empleados utilizando **dbt**
 
 ## Estructura del Proyecto
 
+```text
 company_analysis/
 │
 ├── models/
@@ -20,11 +21,11 @@ company_analysis/
 ├── seeds/ # Datos simulados en CSV (employees.csv, companies.csv)
 ├── dbt_project.yml # Configuración principal de dbt
 ├── packages.yml # Paquetes de dependencias (ej. dbt-expectations)
-
+```
 
 ---
 
-## ⚙Requisitos
+## ⚙ Requisitos
 
 - Python 3.8 o superior  
 - dbt-core `>=1.5`  
@@ -46,9 +47,9 @@ python -m venv venv
 source venv/bin/activate  # En Windows: venv\Scripts\activate
 
 # 3. Instalar dependencias
-pip install dbt-core dbt-duckdb
+pip install -r requirements.txt
 
-# 4. Instalar paquetes adicionales (como dbt-expectations)
+# 4. Instalar paquetes adicionales (como dbt-expectations) (Asegurate de estar parado en la carpeta del proyecto)
 dbt deps
 ```
 ---
