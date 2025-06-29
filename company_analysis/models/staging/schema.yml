@@ -1,0 +1,118 @@
+version: 2
+
+models:
+  - name: stg_employees
+    description: "Modelo de staging para empleados, con datos limpios y normalizados desde el seed original."
+    columns:
+      - name: id
+        description: "Identificador único del empleado"
+        tests: [not_null, unique]
+
+      - name: name
+        description: "Nombre completo del empleado"
+        tests: [not_null]
+
+      - name: email
+        description: "Email del empleado en minúsculas"
+        tests: [not_null]
+
+      - name: phone_number
+        description: "Número de teléfono limpio solo con dígitos"
+        tests: [not_null]
+
+      - name: company_id
+        description: "Identificador de la empresa a la que pertenece el empleado"
+        tests: [not_null]
+
+      - name: salary
+        description: "Salario anual del empleado"
+        tests: 
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 3000
+              max_value: 200000
+
+      - name: age
+        description: "Edad del empleado"
+        tests: 
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 18
+              max_value: 70
+
+      - name: experience_years
+        description: "Años de experiencia laboral"
+        tests: 
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 50
+
+      - name: is_active
+        description: "Indica si el empleado está activo actualmente"
+        tests: [not_null]
+        
+
+    # tests:
+    #   - expression_is_true:
+    #       expression: "salary >= 3000 and salary <= 200000"
+    #   - expression_is_true:
+    #       expression: "age >= 18 and age <= 70"
+    #   - expression_is_true:
+    #       expression: "experience_years >= 0 and experience_years <= 50"
+
+  - name: stg_companies
+    description: "Modelo de staging para empresas, con limpieza y validación básica"
+    columns:
+      - name: id
+        description: "Identificador único de la empresa"
+        tests: [not_null, unique]
+
+      - name: name
+        description: "Nombre de la empresa"
+        tests: [not_null]
+
+      - name: email
+        description: "Email de contacto de la empresa"
+        tests: [not_null]
+
+      - name: phone_number
+        description: "Teléfono limpio de la empresa"
+        tests: [not_null]
+
+      - name: industry
+        description: "Industria a la que pertenece la empresa"
+        tests: [not_null]
+
+      - name: founded_year
+        description: "Año de fundación"
+        tests: 
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1900
+              max_value: 2025
+
+      - name: income
+        description: "Ingresos anuales de la empresa"
+        tests: 
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1000
+              max_value: 10000000
+
+      - name: employees
+        description: "Cantidad de empleados"
+        tests: 
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 100000
+
+    # tests:
+    #   - expression_is_true:
+    #       expression: "founded_year >= 1900 and founded_year <= 2025"
+    #   - expression_is_true:
+    #       expression: "income >= 1000 and income <= 10000000"
+    #   - expression_is_true:
+    #       expression: "employees >= 1 and employees <= 100000"
+

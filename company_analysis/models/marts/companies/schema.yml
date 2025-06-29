@@ -1,0 +1,38 @@
+version: 2
+
+models: 
+  - name: m_companies_large_highincome
+    description: "Empresas con ingresos anuales mayores a 1.000.000"
+    columns:
+      - name: id
+        description: "ID de la empresa"
+        tests: [not_null]
+
+      - name: income
+        description: "Ingresos anuales de la empresa (deben ser mayores a 1.000.000)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1000000
+              max_value: 10000000000
+
+    # tests:
+    #   - expression_is_true:
+    #       expression: "income > 1000000"
+
+  - name: m_industries_top_10_income_employees
+    description: "Top 10 industrias con más ingresos y empleados"
+    columns:
+      - name: industry
+        description: "Industria en particular"
+        tests: [not_null]
+
+      - name: total_income
+        description: "Ingresos totales de la industria"
+        tests:
+          - not_null
+
+      - name: total_employees
+        description: "Número total de empleados en la industria"
+        tests:
+          - not_null

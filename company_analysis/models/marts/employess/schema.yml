@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: m_employees_underpaid_experienced
+    description: "Empleados con al menos 10 años de experiencia y salario menor a 10.000"
+    columns:
+      - name: id
+        description: "ID del empleado"
+        tests: [not_null]
+
+      - name: salary
+        description: "Salario del empleado"
+        tests: 
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10000
+
+      - name: experience_years
+        description: "Años de experiencia"
+        tests: 
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 10
+              max_value: 50
+
+    # tests:
+    #   - expression_is_true:
+    #       expression: "salary < 10000"
+    #   - expression_is_true:
+    #       expression: "experience_years >= 10"
+
+  - name: m_employees_young_active_salary
+    description: "Empleados jóvenes (menores de 30 años) con salario mayor a 20.000 y activos"
+    columns:
+      - name: id
+        description: "ID del empleado"
+        tests: [not_null]
+
+      - name: age
+        description: "Edad del empleado"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 18
+              max_value: 30
+
+      - name: salary
+        description: "Salario del empleado"
+        tests: 
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 20000
+              max_value: 200000000
+
+      - name: is_active
+        description: "Estado del empleado"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: [true]
+
+    # tests:
+    #   - expression_is_true:
+    #       expression: "age < 30"
+    #   - expression_is_true:
+    #       expression: "salary > 20000"
+    #   - expression_is_true:
+    #       expression: "is_active = true"
